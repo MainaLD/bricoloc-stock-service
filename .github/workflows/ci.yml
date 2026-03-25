@@ -11,7 +11,7 @@ on:
 
 env:
   # Nom de l'image Docker sur GitHub Container Registry
-  IMAGE_NAME: ghcr.io/maionald/bricoloc-stock-service
+  IMAGE_NAME: ghcr.io/mainald/bricoloc-stock-service
 
 jobs:
 
