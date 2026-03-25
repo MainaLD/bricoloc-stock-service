@@ -1,0 +1,20 @@
+# docker-compose.yml — Lancement local du service BricoLoc Stock Service
+
+services:
+  stock-service:
+    # Construction de l'image depuis le Dockerfile local
+    build: .
+    
+    # Nom du conteneur
+    container_name: bricoloc-stock-service
+    
+    # Mapping de ports — accès via localhost:8000 sur ta machine
+    ports:
+      - "8000:8000"
+    
+    # Redémarre automatiquement le conteneur si il plante
+    restart: unless-stopped
+    
+    # Variables d'environnement du service
+    environment:
+      - ENV=development
