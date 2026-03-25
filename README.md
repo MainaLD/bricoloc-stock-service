@@ -1,4 +1,4 @@
-# BricoLoc Stock Service — POC Microservice
+# BricoLoc Stock Service - POC Microservice
 
 Service de gestion des stocks et entrepôts de BricoLoc 2.0.  
 Ce POC illustre deux décisions architecturales clés du rapport d'architecture CESI :
