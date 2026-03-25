@@ -1,0 +1,69 @@
+# ci.yml — Pipeline CI/CD GitHub Actions BricoLoc Stock Service
+
+name: CI/CD BricoLoc Stock Service
+
+# Déclenchement sur chaque push et Pull Request sur la branche main
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  # Nom de l'image Docker sur GitHub Container Registry
+  IMAGE_NAME: ghcr.io/maionald/bricoloc-stock-service
+
+jobs:
+
+  # --- Stage 1 : BUILD ---
+  # Construit l'image Docker du service
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Connexion à GitHub Container Registry
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u MainaLD --password-stdin
+
+      - name: Construction de l'image Docker
+        run: docker build -t ${{ env.IMAGE_NAME }}:latest .
+
+  # --- Stage 2 : TEST ---
+  # Lance les tests pytest dans le conteneur
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Installation de Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installation des dépendances
+        run: pip install -r requirements.txt
+
+      - name: Lancement des tests pytest
+        run: pytest tests/ -v
+
+  # --- Stage 3 : PUBLISH ---
+  # Pousse l'image sur GitHub Container Registry
+  publish:
+    runs-on: ubuntu-latest
+    needs: test
+    # Ne publie que sur un push sur main (pas sur les Pull Requests)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Connexion à GitHub Container Registry
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u MainaLD --password-stdin
+
+      - name: Construction et push de l'image
+        run: |
+          docker build -t ${{ env.IMAGE_NAME }}:latest .
+          docker push ${{ env.IMAGE_NAME }}:latest
