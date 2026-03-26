@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BricoLoc — Gestion des stocks</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <h1>BricoLoc</h1>
+        <span class="subtitle">Gestion des stocks et entrepôts</span>
+        <span id="health-badge" class="badge">Vérification...</span>
+    </div>
+</header>
+
+<main>
+    <!-- Sélection de l'entrepôt -->
+    <section class="card">
+        <h2>Sélectionner un entrepôt</h2>
+        <div id="entrepots-liste" class="entrepots-grid"></div>
+    </section>
+
+    <!-- Liste des outils -->
+    <section class="card" id="section-outils" style="display:none;">
+        <h2>Outils disponibles — <span id="nom-entrepot"></span></h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Outil</th>
+                    <th>Disponibles</th>
+                    <th>En location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="outils-liste"></tbody>
+        </table>
+    </section>
+
+    <!-- Notification -->
+    <div id="notification" class="notification" style="display:none;"></div>
+</main>
+
+<script>
+    const API = "";
+    let entrepotSelectionne = null;
+
+    // Vérifie le statut du service au chargement
+    async function checkHealth() {
+        try {
+            const res = await fetch(`${API}/health`);
+            const data = await res.json();
+            const badge = document.getElementById("health-badge");
+            badge.textContent = data.status === "ok" ? "Service actif" : "Service inactif";
+            badge.className = data.status === "ok" ? "badge badge-ok" : "badge badge-error";
+        } catch {
+            document.getElementById("health-badge").textContent = "Service inactif";
+            document.getElementById("health-badge").className = "badge badge-error";
+        }
+    }
+
+    // Charge la liste des entrepôts
+    async function chargerEntrepots() {
+        const res = await fetch(`${API}/stocks/`);
+        const entrepots = await res.json();
+        const container = document.getElementById("entrepots-liste");
+        container.innerHTML = "";
+        entrepots.forEach(e => {
+            const total = e.outils.reduce((s, o) => s + o.disponibles, 0);
+            const btn = document.createElement("button");
+            btn.className = "entrepot-btn";
+            btn.innerHTML = `<strong>${e.nom}</strong><br><small>${total} outils disponibles</small>`;
+            btn.onclick = () => chargerOutils(e.id, e.nom);
+            container.appendChild(btn);
+        });
+    }
+
+    // Charge les outils d'un entrepôt
+    async function chargerOutils(entrepotId, nomEntrepot) {
+        entrepotSelectionne = entrepotId;
+        const res = await fetch(`${API}/stocks/${entrepotId}`);
+        const entrepot = await res.json();
+
+        document.getElementById("nom-entrepot").textContent = nomEntrepot;
+        document.getElementById("section-outils").style.display = "block";
+
+        const tbody = document.getElementById("outils-liste");
+        tbody.innerHTML = "";
+        entrepot.outils.forEach(o => {
+            const tr = document.createElement("tr");
+            tr.id = `outil-${o.id}`;
+            tr.innerHTML = `
+                <td>${o.nom}</td>
+                <td class="stock-dispo ${o.disponibles === 0 ? 'rupture' : ''}">${o.disponibles}</td>
+                <td class="stock-loue">${o.loues}</td>
+                <td class="actions">
+                    <button class="btn-louer" onclick="louer(${o.id})" ${o.disponibles === 0 ? 'disabled' : ''}>
+                        Louer
+                    </button>
+                    <button class="btn-retourner" onclick="retourner(${o.id})" ${o.loues === 0 ? 'disabled' : ''}>
+                        Retourner
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // Loue un outil
+    async function louer(outilId) {
+        const res = await fetch(`${API}/stocks/${entrepotSelectionne}/louer`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ outil_id: outilId, quantite: 1 })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            afficherNotification(`Location enregistrée : ${data.outil.nom}`, "success");
+            chargerOutils(entrepotSelectionne, document.getElementById("nom-entrepot").textContent);
+            chargerEntrepots();
+        } else {
+            afficherNotification(data.detail, "error");
+        }
+    }
+
+    // Retourne un outil
+    async function retourner(outilId) {
+        const res = await fetch(`${API}/stocks/${entrepotSelectionne}/retourner`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ outil_id: outilId, quantite: 1 })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            afficherNotification(`Retour enregistré : ${data.outil.nom}`, "success");
+            chargerOutils(entrepotSelectionne, document.getElementById("nom-entrepot").textContent);
+            chargerEntrepots();
+        } else {
+            afficherNotification(data.detail, "error");
+        }
+    }
+
+    // Affiche une notification temporaire
+    function afficherNotification(message, type) {
+        const notif = document.getElementById("notification");
+        notif.textContent = message;
+        notif.className = `notification ${type}`;
+        notif.style.display = "block";
+        setTimeout(() => notif.style.display = "none", 3000);
+    }
+
+    // Initialisation
+    checkHealth();
+    chargerEntrepots();
+</script>
+
+</body>
+</html>

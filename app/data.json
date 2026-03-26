@@ -1,0 +1,94 @@
+{
+  "entrepots": [
+    {
+      "id": 1,
+      "nom": "Paris Nord",
+      "outils": [
+        {
+          "id": 1,
+          "nom": "Perceuse",
+          "disponibles": 1,
+          "loues": 6
+        },
+        {
+          "id": 2,
+          "nom": "Ponceuse",
+          "disponibles": 2,
+          "loues": 2
+        },
+        {
+          "id": 3,
+          "nom": "Echelle",
+          "disponibles": 8,
+          "loues": 0
+        },
+        {
+          "id": 4,
+          "nom": "Karcher",
+          "disponibles": 6,
+          "loues": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "nom": "Lyon Centre",
+      "outils": [
+        {
+          "id": 1,
+          "nom": "Perceuse",
+          "disponibles": 6,
+          "loues": 1
+        },
+        {
+          "id": 2,
+          "nom": "Marteau piqueur",
+          "disponibles": 4,
+          "loues": 0
+        },
+        {
+          "id": 3,
+          "nom": "Compresseur",
+          "disponibles": 3,
+          "loues": 2
+        },
+        {
+          "id": 4,
+          "nom": "Tronconneuse",
+          "disponibles": 3,
+          "loues": 0
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "nom": "Bordeaux Sud",
+      "outils": [
+        {
+          "id": 1,
+          "nom": "Perceuse",
+          "disponibles": 7,
+          "loues": 0
+        },
+        {
+          "id": 2,
+          "nom": "Niveau laser",
+          "disponibles": 4,
+          "loues": 3
+        },
+        {
+          "id": 3,
+          "nom": "Ponceuse",
+          "disponibles": 5,
+          "loues": 0
+        },
+        {
+          "id": 4,
+          "nom": "Karcher",
+          "disponibles": 5,
+          "loues": 2
+        }
+      ]
+    }
+  ]
+}
