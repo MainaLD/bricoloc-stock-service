@@ -7,8 +7,8 @@
         {
           "id": 1,
           "nom": "Perceuse",
-          "disponibles": 2,
-          "loues": 5
+          "disponibles": 3,
+          "loues": 4
         },
         {
           "id": 2,
@@ -43,8 +43,8 @@
         {
           "id": 2,
           "nom": "Marteau piqueur",
-          "disponibles": 4,
-          "loues": 0
+          "disponibles": 3,
+          "loues": 1
         },
         {
           "id": 3,
@@ -67,14 +67,14 @@
         {
           "id": 1,
           "nom": "Perceuse",
-          "disponibles": 7,
-          "loues": 0
+          "disponibles": 6,
+          "loues": 1
         },
         {
           "id": 2,
           "nom": "Niveau laser",
-          "disponibles": 4,
-          "loues": 3
+          "disponibles": 5,
+          "loues": 2
         },
         {
           "id": 3,
