@@ -1,4 +1,4 @@
-# BricoLoc Stock Service — POC Microservice v2.0
+# BricoLoc Stock Service - POC Microservice v2.0
 
 Preuve de concept (POC) développée dans le cadre du rapport d'architecture
 CESI BricoLoc 2.0. Ce service simule le microservice Stock & Logistique

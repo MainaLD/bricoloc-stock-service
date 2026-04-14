@@ -7,8 +7,8 @@
         {
           "id": 1,
           "nom": "Perceuse",
-          "disponibles": 1,
-          "loues": 6
+          "disponibles": 2,
+          "loues": 5
         },
         {
           "id": 2,
@@ -19,8 +19,8 @@
         {
           "id": 3,
           "nom": "Echelle",
-          "disponibles": 8,
-          "loues": 0
+          "disponibles": 7,
+          "loues": 1
         },
         {
           "id": 4,
