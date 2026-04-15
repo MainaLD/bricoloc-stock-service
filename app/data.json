@@ -7,8 +7,8 @@
         {
           "id": 1,
           "nom": "Perceuse",
-          "disponibles": 3,
-          "loues": 4
+          "disponibles": 5,
+          "loues": 2
         },
         {
           "id": 2,
