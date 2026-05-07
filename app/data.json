@@ -7,8 +7,8 @@
         {
           "id": 1,
           "nom": "Perceuse",
-          "disponibles": 5,
-          "loues": 2
+          "disponibles": 6,
+          "loues": 1
         },
         {
           "id": 2,
@@ -37,8 +37,8 @@
         {
           "id": 1,
           "nom": "Perceuse",
-          "disponibles": 6,
-          "loues": 1
+          "disponibles": 4,
+          "loues": 3
         },
         {
           "id": 2,
@@ -49,8 +49,8 @@
         {
           "id": 3,
           "nom": "Compresseur",
-          "disponibles": 3,
-          "loues": 2
+          "disponibles": 1,
+          "loues": 4
         },
         {
           "id": 4,
